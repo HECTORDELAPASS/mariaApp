@@ -1,0 +1,28 @@
+<?php
+include 'conexion.php';
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $nombre = $_POST['nombre'];
+    $nombre_original = $_POST['nombre_original'];
+    $duracion = $_POST['duracion'];
+    $fecha_lanzamiento = $_POST['fecha_lanzamiento'];
+    $genero = $_POST['genero'];
+    $idioma = $_POST['idioma'];
+    $compania = $_POST['compania'];
+
+    $sql_insert = "INSERT INTO Pelicula (titulo, titulo_original, duracionPelicula, lanzamientoPelicula, genero, idioma_original, compania) 
+                   VALUES (?, ?, ?, ?, ?, ?, ?)";
+    $params_insert = array($nombre, $nombre_original, $duracion, $fecha_lanzamiento, $genero, $idioma, $compania);
+    $stmt = sqlsrv_query($conn, $sql_insert, $params_insert);
+
+    if ($stmt === false) {
+        echo "Error al insertar la película: " . print_r(sqlsrv_errors(), true);
+    } else {
+        echo "La película se ha agregado correctamente.";
+    }
+
+    sqlsrv_free_stmt($stmt);
+}
+
+sqlsrv_close($conn);
+?>
